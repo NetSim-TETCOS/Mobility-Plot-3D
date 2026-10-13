@@ -3,10 +3,11 @@ import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D  # Importing 3D axes
 
 # Path of the mobility log file from temp path
-log_file_path = 'C:\\Users\\MARK\\AppData\\Local\\Temp\\netsim\\pro_14.1\\log\\Mobility_log.csv'
+log_file_path = 'D:\\rel-update-12-10\\Docs\\Sample_Configuration\\DTDMA\\CFT\\16QAM_Modulation\\log\\Mobility_log.csv'
 
 # Load data from the file, skipping the first row containing column headers
-data = pd.read_csv(log_file_path)
+# index_col=False: data rows end with a trailing comma, which otherwise shifts the columns
+data = pd.read_csv(log_file_path, index_col=False)
 
 # Define device names array (modify as needed)
 Device_names = ['Drone 1', 'Drone 2', 'Helicopter', 'Vehicle 1', 'Vehicle 2','Control Center']
@@ -31,7 +32,8 @@ for i, device_id in enumerate(device_ids):
     z = device_data['Position Z(m)']   # Z coordinates
 
     # Access device name from the defined array
-    device_name = Device_names[i]
+    # Device Id 1..N maps to Device_names[0..N-1] (the static Control Center is not in the log)
+    device_name = Device_names[int(device_id) - 1]
 
     # Plotting with legend entry set to device name
     ax.plot(x, y, z, 'o-', linewidth=line_width, color=colors[i], label=device_name)
